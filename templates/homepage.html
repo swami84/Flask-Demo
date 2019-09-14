@@ -1,0 +1,23 @@
+<!doctype html>
+<title>Monthly Close Stock Chart</title>
+<link rel=stylesheet type=text/css href='{{ url_for('static',filename='style_lulu.css')}}'>
+<div class=page>
+  <h1>Monthly Close Stock Chart</h1>
+  <div class=metanav>
+
+    <h4>
+      Please enter the stock ticker.
+    </h4>
+
+    <form id='homepage' method='post' action='homepage' >
+      <p>
+    Ticker: <input type='text' name='ticker' />
+      </p>
+      <p>
+    <input type='submit' value='Submit' />
+      </p>
+    </form>
+
+  </div>
+</div>
+</html>
