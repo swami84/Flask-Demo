@@ -6,6 +6,5 @@ jinja2
 pip
 simplejson
 numpy==1.8.1
-datetime
-alpha_vantage
+
 quandl
