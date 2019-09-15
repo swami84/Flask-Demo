@@ -82,6 +82,6 @@ def  display():
     return render_template('display.html')
     
 if __name__ == '__main__':
-  app.run(port=5000)
+  app.run()
 # THis is a comment
 
