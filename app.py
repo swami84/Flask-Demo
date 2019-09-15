@@ -8,10 +8,6 @@ import quandl
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
-ticker=''
-
-
-
 
 app = Flask(__name__)
 app.vars = {}
@@ -78,14 +74,14 @@ def  display():
     output_file("templates/display.html", title="Stock Chart")
     #from shutil import copyfile
     #copyfile("stock.html", "templates/stock.html")
-    show(p1)
+    #show(p1)
     #save(p1, filename = "\templates\stocks1.html")
     
     
     
     return render_template('display.html')
     
-
 if __name__ == '__main__':
-  app.run(debug= True)
+  app.run(port=5000)
+# THis is a comment
 
