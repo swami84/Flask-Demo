@@ -13,7 +13,13 @@ app = Flask(__name__)
 app.vars = {}
 
 
-
+@app.route('/',methods = ['POST', 'GET'])
+def index():
+  if request.method == 'GET':
+    return redirect ('/homepage')
+    
+  else:
+    return redirect ('/homepage')
   
 
 @app.route('/homepage', methods = ['POST', 'GET'])
@@ -24,7 +30,7 @@ def homepage():
     
   else:
     app.vars['ticker'] = request.form['ticker']
-    return redirect('/display')
+    return redirect ('/display')
     
 #@app.route('/display', methods = ['GET'])
 ##def generateoutput(ticker):
@@ -67,10 +73,6 @@ def  display():
     p1.circle(data['Date'], data['Close'], size=6, legend='Closing Price',color='red', alpha=0.5)
     p1.legend.location = "top_left"
 
-
-    
-    
-
     output_file("templates/display.html", title="Stock Chart")
     #from shutil import copyfile
     #copyfile("stock.html", "templates/stock.html")
@@ -80,8 +82,8 @@ def  display():
     
     
     return render_template('display.html')
-    
+##    
 if __name__ == '__main__':
-  app.run()
+  app.run(debug=True)
 # THis is a comment
 
