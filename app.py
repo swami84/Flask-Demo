@@ -1,16 +1,14 @@
 from flask import Flask, render_template, request, redirect
 import pandas as pd
 import numpy as np
-from datetime import date
-import datetime
 from bokeh.io import output_notebook
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show,output_file,save
-from alpha_vantage.timeseries import TimeSeries
+import quandl
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
-
+ticker=''
 
 def datetime(x):
     return np.array(x, dtype=np.datetime64)
@@ -58,22 +56,24 @@ def homepage():
 ##    return redirect('/display')
 @app.route('/display', methods = ['GET', 'POST'])
 def  display():
-    ALPHA_VANTAGE_API_KEY = 'IU2OUWVANSPF10UV'
-    ts = TimeSeries(key=ALPHA_VANTAGE_API_KEY, output_format='pandas')
-    df, data_info = ts.get_monthly(app.vars['ticker'])
-    data = df.copy()
-    data = data.reset_index()
-    data['Avg Price'] = (data['2. high'] + data ['3. low'])/2
+    tick = "WIKI/"+app.vars['ticker']
+    data = quandl.get(tick, start_date="2016-01-01", end_date="2018-01-01", api_key='zmP39qUBxQLhWwMVN9Ra')
 
-  
-    p1 = figure(x_axis_type="datetime", title =  app.vars['ticker'] +  " Stock Price")
+    data = data.reset_index()
+    data['Avg Price'] = (data['High'] + data ['Low'])/2
+
+    p1 = figure(x_axis_type="datetime", title= tick + " Stock Price")
     p1.grid.grid_line_alpha=0.6
     p1.xaxis.axis_label = 'Date'
     p1.yaxis.axis_label = 'Price'
-    p1.line((datetime(data['date'])), data['Avg Price'], color='#1729CB',line_width = 4, legend='Avg Price')
-    p1.circle((datetime(data['date'])), data['1. open'], size=6, legend='Opening Price',color='green', alpha=0.5)
-    p1.circle((datetime(data['date'])), data['4. close'], size=6, legend='Closing Price',color='red', alpha=0.5)
+
+    p1.line((datetime(data['Date'])), data['Avg Price'], color='#1729CB',line_width = 4, legend='Avg Price')
+    p1.circle((datetime(data['Date'])), data['Open'], size=6, legend='Opening Price',color='green', alpha=0.5)
+    p1.circle((datetime(data['Date'])), data['Close'], size=6, legend='Closing Price',color='red', alpha=0.5)
     p1.legend.location = "top_left"
+
+
+    
     
 
     output_file("templates/display.html", title="Stock Chart")

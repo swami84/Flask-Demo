@@ -8,3 +8,4 @@ simplejson
 numpy
 datetime
 alpha_vantage
+quandl
