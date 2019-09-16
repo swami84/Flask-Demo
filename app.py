@@ -7,19 +7,19 @@ from bokeh.plotting import figure, show,output_file,save
 import quandl
 from bokeh.resources import CDN
 from bokeh.embed import file_html
-
+ticker =''
 
 app = Flask(__name__)
 app.vars = {}
 
 
-@app.route('/',methods = ['POST', 'GET'])
+@app.route('/')
 def index():
-  if request.method == 'GET':
-    return redirect ('/homepage')
+  #if request.method == 'GET':
+  return redirect ('/homepage')
     
-  else:
-    return redirect ('/homepage')
+  #else:
+    #return redirect ('/homepage')
   
 
 @app.route('/homepage', methods = ['POST', 'GET'])
@@ -30,7 +30,8 @@ def homepage():
     
   else:
     app.vars['ticker'] = request.form['ticker']
-    return redirect ('/display')
+    tick = "WIKI/"+app.vars['ticker']
+    return redirect('/display')
     
 #@app.route('/display', methods = ['GET'])
 ##def generateoutput(ticker):
@@ -55,6 +56,7 @@ def homepage():
 ##    output_file("\templates\stocks.html", title="Stock Chart")
 ##    #return render_template('display.html')
 ##    return redirect('/display')
+  
 @app.route('/display', methods = ['GET', 'POST'])
 def  display():
     tick = "WIKI/"+app.vars['ticker']
@@ -76,7 +78,7 @@ def  display():
     output_file("templates/display.html", title="Stock Chart")
     #from shutil import copyfile
     #copyfile("stock.html", "templates/stock.html")
-    #show(p1)
+    show(p1)
     #save(p1, filename = "\templates\stocks1.html")
     
     
@@ -84,6 +86,6 @@ def  display():
     return render_template('display.html')
 ##    
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=False)
 # THis is a comment
 
