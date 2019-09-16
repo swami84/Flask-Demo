@@ -31,6 +31,26 @@ def homepage():
   else:
     app.vars['ticker'] = request.form['ticker']
     tick = "WIKI/"+app.vars['ticker']
+    
+    data = quandl.get(tick, start_date="2016-01-01", end_date="2018-01-01", api_key='zmP39qUBxQLhWwMVN9Ra')
+
+    data = data.reset_index()
+    data['Avg Price'] = (data['High'] + data ['Low'])/2
+
+    p1 = figure(x_axis_type="datetime", title= tick + " Stock Price")
+    p1.grid.grid_line_alpha=0.6
+    p1.xaxis.axis_label = 'Date'
+    p1.yaxis.axis_label = 'Price'
+
+    p1.line(data['Date'], data['Avg Price'], color='#1729CB',line_width = 4, legend='Avg Price')
+    p1.circle(data['Date'], data['Open'], size=6, legend='Opening Price',color='green', alpha=0.5)
+    p1.circle(data['Date'], data['Close'], size=6, legend='Closing Price',color='red', alpha=0.5)
+    p1.legend.location = "top_left"
+
+    output_file("templates/display.html", title="Stock Chart")
+    #from shutil import copyfile
+    #copyfile("stock.html", "templates/stock.html")
+    show(p1)
     return redirect('/display')
     
 #@app.route('/display', methods = ['GET'])
@@ -59,26 +79,26 @@ def homepage():
   
 @app.route('/display', methods = ['GET', 'POST'])
 def  display():
-    tick = "WIKI/"+app.vars['ticker']
-    data = quandl.get(tick, start_date="2016-01-01", end_date="2018-01-01", api_key='zmP39qUBxQLhWwMVN9Ra')
-
-    data = data.reset_index()
-    data['Avg Price'] = (data['High'] + data ['Low'])/2
-
-    p1 = figure(x_axis_type="datetime", title= tick + " Stock Price")
-    p1.grid.grid_line_alpha=0.6
-    p1.xaxis.axis_label = 'Date'
-    p1.yaxis.axis_label = 'Price'
-
-    p1.line(data['Date'], data['Avg Price'], color='#1729CB',line_width = 4, legend='Avg Price')
-    p1.circle(data['Date'], data['Open'], size=6, legend='Opening Price',color='green', alpha=0.5)
-    p1.circle(data['Date'], data['Close'], size=6, legend='Closing Price',color='red', alpha=0.5)
-    p1.legend.location = "top_left"
-
-    output_file("templates/display.html", title="Stock Chart")
-    #from shutil import copyfile
-    #copyfile("stock.html", "templates/stock.html")
-    show(p1)
+##    tick = "WIKI/"+app.vars['ticker']
+##    data = quandl.get(tick, start_date="2016-01-01", end_date="2018-01-01", api_key='zmP39qUBxQLhWwMVN9Ra')
+##
+##    data = data.reset_index()
+##    data['Avg Price'] = (data['High'] + data ['Low'])/2
+##
+##    p1 = figure(x_axis_type="datetime", title= tick + " Stock Price")
+##    p1.grid.grid_line_alpha=0.6
+##    p1.xaxis.axis_label = 'Date'
+##    p1.yaxis.axis_label = 'Price'
+##
+##    p1.line(data['Date'], data['Avg Price'], color='#1729CB',line_width = 4, legend='Avg Price')
+##    p1.circle(data['Date'], data['Open'], size=6, legend='Opening Price',color='green', alpha=0.5)
+##    p1.circle(data['Date'], data['Close'], size=6, legend='Closing Price',color='red', alpha=0.5)
+##    p1.legend.location = "top_left"
+##
+##    output_file("templates/display.html", title="Stock Chart")
+##    #from shutil import copyfile
+##    #copyfile("stock.html", "templates/stock.html")
+##    show(p1)
     #save(p1, filename = "\templates\stocks1.html")
     
     
